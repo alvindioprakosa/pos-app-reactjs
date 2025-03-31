@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, ListGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart, setDetail } from "../features/CartSlice.js";
@@ -6,30 +6,41 @@ import TotalCart from "./TotalCart.jsx";
 import CartModal from "./CartModal.jsx";
 
 const Order = () => {
+  const dispatch = useDispatch();
   const carts = useSelector((state) => state.cart.data);
   const loading = useSelector((state) => state.cart.loading);
   const error = useSelector((state) => state.cart.error);
-  const dispatch = useDispatch();
-  const [modalShow, setModalShow] = React.useState(false);
+  const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
-    dispatch(getCart());
+    const fetchCart = async () => {
+      try {
+        await dispatch(getCart());
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+      }
+    };
+    fetchCart();
   }, [dispatch]);
+
   return (
     <>
       <Col md={3} className="mb-5 pb-5">
         <h4>Order List</h4>
-        {error ? error : ""}
+        {error && <p className="text-danger">{error}</p>}
         <hr />
         <ListGroup variant="flush">
-          {carts ? (
+          {loading ? (
+            <p>Loading...</p>
+          ) : Array.isArray(carts) && carts.length > 0 ? (
             carts.map((item) => (
               <ListGroup.Item
                 key={item.id}
                 variant="flush"
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  dispatch(setDetail(item)), setModalShow(true);
+                  dispatch(setDetail(item));
+                  setModalShow(true);
                 }}
               >
                 <div className="fw-bold">{item.name}</div>
@@ -56,8 +67,6 @@ const Order = () => {
                 </div>
               </ListGroup.Item>
             ))
-          ) : loading ? (
-            <p>Loading...</p>
           ) : (
             <p>No data</p>
           )}
