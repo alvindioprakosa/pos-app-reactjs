@@ -7,11 +7,16 @@ import CartModal from "./CartModal.jsx";
 
 const Order = () => {
   const dispatch = useDispatch();
+
+  // Ambil data dari state Redux
   const carts = useSelector((state) => state.cart.data);
   const loading = useSelector((state) => state.cart.loading);
   const error = useSelector((state) => state.cart.error);
+
+  // State untuk menampilkan modal detail cart
   const [modalShow, setModalShow] = useState(false);
 
+  // Ambil data cart saat komponen pertama kali dimount
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -30,6 +35,7 @@ const Order = () => {
         {error && <p className="text-danger">{error}</p>}
         <hr />
         <ListGroup variant="flush">
+          {/* Tampilkan loading, data cart, atau pesan kosong */}
           {loading ? (
             <p>Loading...</p>
           ) : Array.isArray(carts) && carts.length > 0 ? (
@@ -50,7 +56,7 @@ const Order = () => {
                       Rp {parseInt(item.price).toLocaleString("id-ID")} x{" "}
                       {item.qty}
                     </small>
-                    <p>
+                    <p className="mb-0">
                       <small>{item.note}</small>
                     </p>
                   </div>
@@ -71,8 +77,12 @@ const Order = () => {
             <p>No data</p>
           )}
         </ListGroup>
+
+        {/* Komponen total */}
         <TotalCart carts={carts} />
       </Col>
+
+      {/* Modal untuk detail cart */}
       <CartModal show={modalShow} onHide={() => setModalShow(false)} />
     </>
   );
