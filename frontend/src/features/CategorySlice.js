@@ -13,16 +13,19 @@ export const getAllCategory = createAsyncThunk(
       const response = await axios.get("/categories");
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : error.message);
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
     }
   }
 );
 
-// Entity adapter to manage normalized category data
+// Entity adapter: mengatur data jadi normalized (id dan entitas)
 const categoryEntity = createEntityAdapter({
-  selectId: (category) => category.id,
+  selectId: (category) => category.id, // kategori diidentifikasi berdasarkan id
 });
 
+// Slice
 const categorySlice = createSlice({
   name: "category",
   initialState: categoryEntity.getInitialState({
@@ -37,7 +40,7 @@ const categorySlice = createSlice({
         state.error = null;
       })
       .addCase(getAllCategory.fulfilled, (state, action) => {
-        categoryEntity.setAll(state, action.payload);
+        categoryEntity.setAll(state, action.payload); // isi data kategori
         state.loading = false;
       })
       .addCase(getAllCategory.rejected, (state, action) => {
@@ -47,7 +50,7 @@ const categorySlice = createSlice({
   },
 });
 
-// Selectors for accessing normalized category data
+// Selectors (untuk ambil data dari state)
 export const categorySelectors = categoryEntity.getSelectors(
   (state) => state.category
 );
