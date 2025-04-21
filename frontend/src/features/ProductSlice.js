@@ -9,7 +9,9 @@ export const getProduct = createAsyncThunk(
       const response = await axios.get("/products");
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : error.message);
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
     }
   }
 );
@@ -22,7 +24,9 @@ export const getProductByCategory = createAsyncThunk(
       const response = await axios.get(`/products?category_id=${category}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : error.message);
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
     }
   }
 );
