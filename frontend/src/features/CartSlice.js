@@ -20,82 +20,103 @@ const handleAsyncRejected = (state, action) => {
 };
 
 // Get all cart items
-export const getCart = createAsyncThunk("cart/getCart", async (_, { rejectWithValue }) => {
-  try {
-    const response = await axios.get("/carts");
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const getCart = createAsyncThunk(
+  "cart/getCart",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("/carts");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // Add item to cart
-export const inputCart = createAsyncThunk("cart/inputCart", async (data, { rejectWithValue }) => {
-  try {
-    await axios.post("/carts", data);
-    const response = await axios.get("/carts");
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const inputCart = createAsyncThunk(
+  "cart/inputCart",
+  async (data, { rejectWithValue }) => {
+    try {
+      await axios.post("/carts", data);
+      const response = await axios.get("/carts");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // Update cart item
-export const updateCart = createAsyncThunk("cart/updateCart", async (data, { rejectWithValue }) => {
-  try {
-    await axios.put(`/carts/${data.id}`, data);
-    const response = await axios.get("/carts");
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const updateCart = createAsyncThunk(
+  "cart/updateCart",
+  async (data, { rejectWithValue }) => {
+    try {
+      await axios.put(`/carts/${data.id}`, data);
+      const response = await axios.get("/carts");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // Delete cart item
-export const delCart = createAsyncThunk("cart/delCart", async (id, { rejectWithValue }) => {
-  try {
-    await axios.delete(`/carts/${id}`);
-    const response = await axios.get("/carts");
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const delCart = createAsyncThunk(
+  "cart/delCart",
+  async (id, { rejectWithValue }) => {
+    try {
+      await axios.delete(`/carts/${id}`);
+      const response = await axios.get("/carts");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // Update quantity and total price
-export const updCart = createAsyncThunk("cart/updCart", async (data, { rejectWithValue }) => {
-  try {
-    const updatedData = { ...data, totalPrice: data.qty * data.price };
-    await axios.put(`/carts/${data.id}`, updatedData);
-    const response = await axios.get("/carts");
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const updCart = createAsyncThunk(
+  "cart/updCart",
+  async (data, { rejectWithValue }) => {
+    try {
+      const updatedData = { ...data, totalPrice: data.qty * data.price };
+      await axios.put(`/carts/${data.id}`, updatedData);
+      const response = await axios.get("/carts");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // Save order and clear cart
-export const saveOrder = createAsyncThunk("cart/saveOrder", async (orderData, { rejectWithValue }) => {
-  try {
-    await axios.post("/orders", orderData);
-    const cartItems = (await axios.get("/carts")).data;
+export const saveOrder = createAsyncThunk(
+  "cart/saveOrder",
+  async (orderData, { rejectWithValue }) => {
+    try {
+      await axios.post("/orders", orderData);
+      const cartItems = (await axios.get("/carts")).data;
 
-    for (const item of cartItems) {
-      try {
-        await axios.delete(`/carts/${item.id}`);
-      } catch (err) {
-        console.error("Error deleting cart item:", err);
+      for (const item of cartItems) {
+        try {
+          await axios.delete(`/carts/${item.id}`);
+        } catch (err) {
+          console.error("Error deleting cart item:", err);
+        }
       }
-    }
 
-    return [];
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+      return [];
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
 
 // Set detail (for editing or detail view)
-export const setDetail = createAsyncThunk("cart/setDetail", async (data) => data);
+export const setDetail = createAsyncThunk(
+  "cart/setDetail",
+  async (data) => data
+);
 
 const cartSlice = createSlice({
   name: "cart",
