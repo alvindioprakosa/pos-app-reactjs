@@ -25,7 +25,6 @@ const TotalCart = ({ carts = [] }) => {
 
     Swal.fire("Order Success!", "", "success").then(() => {
       console.log("Order berhasil disimpan!", orderData);
-      // Tambahkan navigasi atau reset state jika diperlukan di sini
     });
   };
 
@@ -45,7 +44,7 @@ const TotalCart = ({ carts = [] }) => {
               className="w-100 me-3 mb-3"
               size="lg"
               onClick={saveCartData}
-              disabled={carts.length === 0} // Mencegah klik jika cart kosong
+              disabled={carts.length === 0}
             >
               <FaCartArrowDown /> Bayar
             </Button>
