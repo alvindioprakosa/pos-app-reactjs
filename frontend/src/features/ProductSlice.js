@@ -16,7 +16,6 @@ export const getProduct = createAsyncThunk(
   }
 );
 
-// Fetch products by category
 export const getProductByCategory = createAsyncThunk(
   "product/getProductByCategory",
   async (category, { rejectWithValue }) => {
@@ -41,7 +40,6 @@ const productSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Get all products
       .addCase(getProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -56,7 +54,6 @@ const productSlice = createSlice({
         state.data = null;
       })
 
-      // Get products by category
       .addCase(getProductByCategory.pending, (state) => {
         state.loading = true;
         state.error = null;
