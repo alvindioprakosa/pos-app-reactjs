@@ -20,9 +20,8 @@ export const getAllCategory = createAsyncThunk(
   }
 );
 
-// Entity adapter: mengatur data jadi normalized (id dan entitas)
 const categoryEntity = createEntityAdapter({
-  selectId: (category) => category.id, // kategori diidentifikasi berdasarkan id
+  selectId: (category) => category.id,
 });
 
 // Slice
@@ -40,7 +39,7 @@ const categorySlice = createSlice({
         state.error = null;
       })
       .addCase(getAllCategory.fulfilled, (state, action) => {
-        categoryEntity.setAll(state, action.payload); // isi data kategori
+        categoryEntity.setAll(state, action.payload);
         state.loading = false;
       })
       .addCase(getAllCategory.rejected, (state, action) => {
@@ -50,7 +49,6 @@ const categorySlice = createSlice({
   },
 });
 
-// Selectors (untuk ambil data dari state)
 export const categorySelectors = categoryEntity.getSelectors(
   (state) => state.category
 );
