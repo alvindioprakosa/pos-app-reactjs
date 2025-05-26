@@ -8,15 +8,12 @@ import CartModal from "./CartModal.jsx";
 const Order = () => {
   const dispatch = useDispatch();
 
-  // Ambil data dari state Redux
   const carts = useSelector((state) => state.cart.data);
   const loading = useSelector((state) => state.cart.loading);
   const error = useSelector((state) => state.cart.error);
 
-  // State untuk menampilkan modal detail cart
   const [modalShow, setModalShow] = useState(false);
 
-  // Ambil data cart saat komponen pertama kali dimount
   useEffect(() => {
     const fetchCart = async () => {
       try {
