@@ -2,19 +2,19 @@ import { Card, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 const CardComponent = ({ product, setCart }) => {
-  if (!product) return null; // Hindari error jika product tidak tersedia
+  if (!product) return null;
 
   return (
     <Col md={4} xs={6} className="mb-4">
       <Card
         className="shadow"
         onClick={() => setCart(product)}
-        style={{ cursor: "pointer" }} // Menambahkan cursor pointer
+        style={{ cursor: "pointer" }}
       >
         <Card.Img
           variant="top"
           src={`/img/${product.image}`}
-          alt={product.name} // Tambahkan alt untuk aksesibilitas
+          alt={product.name}
         />
         <Card.Body>
           <Card.Title>{`${product.name} (${product.code})`}</Card.Title>
